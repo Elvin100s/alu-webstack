@@ -34,13 +34,15 @@ defaults
     errorfile 503 /etc/haproxy/errors/503.http
     errorfile 504 /etc/haproxy/errors/504.http
 
-frontend https_frontend
+frontend http_front
     bind *:80
-    bind *:443 ssl crt /etc/letsencrypt/live/www.elvin100s.tech/fullchain.pem
+    bind *:443 ssl crt /etc/ssl/private/www.elvin100s.tech.pem
     http-request redirect scheme https unless { ssl_fc }
-    default_backend backend_servers
+    default_backend http_back
 
-backend backend_servers
+backend http_back
     balance roundrobin
-    server web-01 35.174.4.60:80 check
-    server web-02 34.230.45.161:80 check
+    server 6536-web-01 35.174.4.60:80 check
+    server 6536-web-02 34.230.45.161:80 check
+
+
